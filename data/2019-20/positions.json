@@ -1,30 +1,31 @@
-{
-    "1" : {
+[
+    null,
+    {
     "plural_name_short": "GKP",
     "plural_name": "Goalkeepers",
     "singular_name_short": "GKP",
     "id": 1,
     "singular_name": "Goalkeeper"
     },
-    "2" : {
+    {
     "plural_name_short": "DEF",
     "plural_name": "Defenders",
     "singular_name_short": "DEF",
     "id": 2,
     "singular_name": "Defender"
     },
-    "3" : {
+    {
     "plural_name_short": "MID",
     "plural_name": "Midfielders",
     "singular_name_short": "MID",
     "id": 3,
     "singular_name": "Midfielder"
     },
-    "4" : {
+    {
     "plural_name_short": "FWD",
     "plural_name": "Forwards",
     "singular_name_short": "FWD",
     "id": 4,
     "singular_name": "Forward"
     }
-}
+]
