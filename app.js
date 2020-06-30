@@ -19,15 +19,16 @@ function gameweek_data(gw, season) {
         if (!error && response.statusCode == 200) {
             const data = csv2json(body, {parseNumbers: true, hash: false});
             const json = [];
-            data.forEach(function(val, index, arr) {
-                const player = player_data.filter(f => f.id === val.element)[0];
-                json[val.element] = {
+            data.forEach(function(val, i, arr) {
+                const player = player_data && player_data.filter(f => f && f.id === val.element)[0];
+                const index = val.element;
+                json[index] = {
                     'id': val.element,
-                    'first_name': player.first_name,
-                    'second_name': player.second_name,
-                    'web_name': player.web_name,
-                    'position': player.position,
-                    'team': player.team,
+                    'first_name': player && player.first_name,
+                    'second_name': player && player.second_name,
+                    'web_name': player && player.web_name,
+                    'position': player && player.position,
+                    'team': player && player.team,
                     ...val
                     };
             });
@@ -60,8 +61,9 @@ function player_list(season) {
                     const data2 = csv2json(body, {parseNumbers: true, hash: false});
                     const data = Object.assign(data1, data2);
                     const json = [];
-                    data.forEach(function(val, index, arr) {
-                        json[val.id] = {
+                    data.forEach(function(val, i, arr) {
+                        const index = val.id;
+                        json[index] = {
                             'id': val.id,
                             'first_name': val.first_name,
                             'second_name': val.second_name,
@@ -102,8 +104,9 @@ function team_list(season) {
         if (!error && response.statusCode == 200) {
             const data = csv2json(body, {parseNumbers: true, hash: false});
             const json = [];
-            data.forEach(function(val, index, arr) {
-                json[val.id] = val;
+            data.forEach(function(val, i, arr) {
+                const index = val.id;
+                json[index] = val;
             });
             fs.writeFile(save_location, JSON.stringify(json), function (err) {
                 if (err) throw err;
@@ -129,14 +132,25 @@ function fixtures_list(season) {
         if (!error && response.statusCode == 200) {
             const data = csv2json(body, {parseNumbers: true, hash: false});
             const json = [];
-            data.forEach(function(val, index, arr) {
-                json[val.id] = val;
-                json[val.id]['stats'] = JSON.parse(val.stats.replace(/'/g,'"'));
+            data.forEach(function(val, i, arr) {
+                const index = val.id;
+                json[index] = val;
+                json[index]['stats'] = JSON.parse(val.stats.replace(/'/g,'"'));
             });
             fs.writeFile(save_location, JSON.stringify(json), function (err) {
                 if (err) throw err;
-                console.log(`Fixtures saved at ${save_location}` );
-              });            
+                console.log(`Master fixtures saved at ${save_location}` );
+              });      
+
+            // Write separate gameweek files
+            for (gw = 1; gw <= 47; gw++) {
+                const gw_save_location = 'data/' + season + `/fixtures/gw${gw}.json`;
+                const gw_data = json.filter(f => f && f.event === gw);
+                fs.writeFile(gw_save_location, JSON.stringify(gw_data), function (err) {
+                    if (err) throw err;
+                    console.log(`GW${gw} fixtures data saved at ${gw_save_location}` );
+                });  
+            }      
         } else {
             console.log('Error!');
             return false;
