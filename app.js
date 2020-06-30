@@ -139,6 +139,7 @@ function fixtures_list(gw, season) {
             data.filter((val) => val.event === gw).forEach(function(val, index, arr) {
                 let key = val.id;
                 json[key] = val;
+                json[key]['stats'] = JSON.parse(val.stats.replace(/'/g,'"'));
             });
             fs.writeFile(save_location, JSON.stringify(json), function (err) {
                 if (err) throw err;
