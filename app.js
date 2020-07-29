@@ -148,7 +148,7 @@ function fixtures_list(season) {
                 const gw_data = json.filter(f => f && f.event === gw);
                 fs.writeFile(gw_save_location, JSON.stringify(gw_data), function (err) {
                     if (err) throw err;
-                    console.log(`GW${gw} fixtures data saved at ${gw_save_location}` );
+                    console.log(`Fixtures data saved at ${gw_save_location}` );
                 });  
             }      
         } else {
@@ -160,8 +160,8 @@ function fixtures_list(season) {
 
 
 // Execute
-// For GW1 to GW40
-for (i = 1; i <= 40; i++) {
+// For GW1 to GW47
+for (i = 1; i <= 47; i++) {
     gameweek_data(i, season);
 }
 player_list(season);
